@@ -1,0 +1,60 @@
+from window import ChildWindow
+from window import *
+from point import Point
+from window import BadArgumentError
+
+""" Unicode enabled text widget,"""
+class TextBox(ChildWindow):
+    def __init__(self, parent, title, top_left, w, h):
+        #assert(parent is not None)
+        #assert(isinstance(parent, (AppWindow)))
+        #assert(isinstance(top_left, Point))
+        if parent is None or not isinstance(parent, (Container)):
+            raise BadArgumentError("Expecting a valid parent window")
+        
+	self.text=''
+        Window.__init__(self, parent, title, top_left, w, h)
+
+    def setText(self, text):
+    	self.text=text
+
+    def getText(self):
+        return self.text
+   	
+    def validate(self, validator):
+    	
+	return validator()
+
+
+def isaNumber(text):
+    return text.replace(' ','').isdigit()
+
+
+def isaFloat(text):
+    text=text.replace(' ','')
+	
+    return text.replace('.','').isdigit() 
+
+def isaURL(text):
+    a=text.split(':')
+    if len(a)!=2 :
+	return False
+    else:
+	if a[0]!="http" and a[0]!="https" :
+	    return False
+    a=text.split('.')
+    if len(a)!=3 :
+        return False
+    else :
+
+	if a[2]!="com":
+	    return False
+	
+    for i in a[:]:
+	if i.isalnum() == False:
+	    if i != '-':
+		return False
+
+
+    else : return True
+    return True
